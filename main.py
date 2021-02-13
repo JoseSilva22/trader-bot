@@ -1,7 +1,7 @@
 import cbpro
 import json
 import time
-import sqlite
+import sqlite3
 
 class myWebsocketClient(cbpro.WebsocketClient):
     def on_open(self):
@@ -27,7 +27,7 @@ print (secrets)
 auth_client = cbpro.AuthenticatedClient(secrets['key'], secrets['secret'], secrets['passphrase'])#,api_url="https://api-public.sandbox.pro.coinbase.com")
 #print(auth_client.get_accounts())
 
-conn = sqlite.connect('crypto.db')
+conn = sqlite3.connect('crypto.db')
 c = conn.cursor()
 # Create table
 c.execute('''CREATE TABLE ethereum (date text, price real, volume_24h real, low_24h real, high_24h real, volume_30d real)''')
