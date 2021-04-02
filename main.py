@@ -3,6 +3,8 @@ import json
 import time
 import sqlite3
 
+
+
 class myWebsocketClient(cbpro.WebsocketClient):
     def on_open(self):
         self.url = "wss://ws-feed.pro.coinbase.com/"
@@ -20,12 +22,19 @@ class myWebsocketClient(cbpro.WebsocketClient):
 
 
 
-with open('secrets.txt') as json_file:
-    secrets = json.load(json_file)
+class traderBot():
+	def __init__(self, secrets, sandbox=False):
+		if sandbox:
+			self.auth_client = cbpro.AuthenticatedClient(secrets['key'], secrets['secret'], secrets['passphrase'])#,api_url="https://api-public.sandbox.pro.coinbase.com")
+		else:
+			self.auth_client = cbpro.AuthenticatedClient(secrets['key'], secrets['secret'], secrets['passphrase'])
+		
 
-print (secrets)
-auth_client = cbpro.AuthenticatedClient(secrets['key'], secrets['secret'], secrets['passphrase'])#,api_url="https://api-public.sandbox.pro.coinbase.com")
-#print(auth_client.get_accounts())
+
+with open('secrets.txt') as json_file:
+	secrets = json.load(json_file)
+
+bot = traderBot(secrets)
 
 conn = sqlite3.connect('crypto.db')
 c = conn.cursor()
